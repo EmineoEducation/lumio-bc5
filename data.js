@@ -500,7 +500,7 @@ Camille.`
 //  PAC · Parcours Activation Compétences
 // ══════════════════════════════════════════════════════════════
 window.PASS_CONFIG = {
-  bloc: 'BC5',
+  bloc: 'bc5',
   titre: 'Engager l\'innovation et la transformation digitale de la communication de la marque',
   epreuve: 'E7 — Proposition de mise en place d\'une transformation d\'outils ou canaux marketing communication induite par une innovation de rupture',
   deadline: 'Vendredi 25 avril 2027 · 18h00',

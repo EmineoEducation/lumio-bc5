@@ -57,371 +57,6 @@ Règles d'évaluation STRICTES :
 - Ne propose pas de stratégie alternative — évalue uniquement ce qui est produit
 - Note réflexive absente ou < 100 mots = E7 non conforme`;
 
-
-// ══════ Portfolio Éminéo — composants partagés (canonique) ══════
-function parseJuryResult(juryText, competences) {
-  const results = {};
-  const niveauMap = {
-    'satisfaisant': 'Satisfaisante',
-    'insuffisant': 'Insuffisante',
-    'absent': 'Absente',
-    'conforme avec distinction': 'Maximale',
-    'conforme': 'Haute',
-    'partiellement conforme': 'Moyenne',
-    'non conforme': 'Insuffisante'
-  };
-
-  competences.forEach(c => {
-    const pattern = new RegExp(`###\\s*${c.code.replace('.', '\\.')}[^\\n]*\\[([^\\]]+)\\]`, 'i');
-    const match = juryText.match(pattern);
-    if (match) {
-      const raw = match[1].toLowerCase().trim();
-      results[c.code] = {
-        niveau: niveauMap[raw] || match[1],
-        acquis: raw !== 'insuffisant' && raw !== 'absent' && raw !== 'non conforme'
-      };
-    } else {
-      results[c.code] = { niveau: 'Non évalué', acquis: false };
-    }
-  });
-
-  // Global level
-  const globalMatch = juryText.match(/\*\*\[([^\]]+)\]\*\*/);
-  const globalRaw = globalMatch ? globalMatch[1].toLowerCase() : '';
-  results._global = {
-    label: globalMatch ? globalMatch[1] : 'Non évalué',
-    acquis: globalRaw.includes('conforme') && !globalRaw.includes('non conforme')
-  };
-
-  // Question jury
-  const qMatch = juryText.match(/## Question de jury\n([^\n]+)/);
-  results._question = qMatch ? qMatch[1] : null;
-
-  return results;
-}
-
-function PortfolioScreen({ studentName, studentEmail, competences, wordCounts, juryResult, globalWords, answers, blocLabel, affaire }) {
-  const [sendState, setSendState] = React.useState('idle'); // idle | sending | sent | error
-  const parsed = React.useMemo(() => parseJuryResult(juryResult || '', competences), [juryResult, competences]);
-  const acquises = competences.filter(c => parsed[c.code]?.acquis);
-  const nonAcquises = competences.filter(c => !parsed[c.code]?.acquis);
-  const portfolioEarned = parsed._global?.acquis && acquises.length >= Math.ceil(competences.length * 0.5);
-  const today = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
-  const prenom = (studentName || '').split(' ')[0] || 'Étudiant';
-
-  // ── Métadonnées affaire / livrable (depuis PASS_CONFIG avec fallbacks) ──
-  const cfg = window.PASS_CONFIG || {};
-  const blocId = blocLabel || cfg.bloc || 'BC1';
-  const affaireTitre = affaire || cfg.titre_affaire || cfg.accroche || 'Affaire Lumio Health';
-  const livrableTitre = cfg.livrableTitre || cfg.deliverable || 'Livrable certifiant PAC';
-  const livrableMeta = cfg.epreuve || 'MSMC RNCP 38504';
-
-  // ── Récit hybride : généré par l'IA depuis les réponses, éditable ──
-  const [recit, setRecit] = React.useState('');
-  const [signature, setSignature] = React.useState('');
-  const [recitState, setRecitState] = React.useState('loading'); // loading | ready | error
-  const [editing, setEditing] = React.useState(false);
-
-  React.useEffect(() => {
-    let cancelled = false;
-    const genRecit = async () => {
-      setRecitState('loading');
-      try {
-        const reponsesText = competences.map(c =>
-          `${c.code} — ${c.label} :\n${(answers && answers[c.code]) || '(non renseigné)'}`
-        ).join('\n\n');
-        const sys = `Tu es l'étudiant ${prenom}, qui vient de produire un livrable certifiant pour le bloc ${blocId} (PAC Lumio Health). À partir de ses réponses ci-dessous, écris à la PREMIÈRE PERSONNE deux courts textes qui expriment sa POSTURE professionnelle et ses CHOIX — pas un résumé.
-
-RÈGLES STRICTES :
-- "recit" : 2 à 3 phrases. Commence par un fait concret tiré des réponses (un chiffre, une contradiction, une tension repérée), puis un choix posé ("j'ai choisi de…"). Ton sobre, professionnel, première personne. Pas de superlatif.
-- "signature" : 1 phrase, sur le modèle "Dans cette affaire, j'ai choisi de … — parce que …". Elle nomme le parti-pris central et sa justification.
-- Réponds UNIQUEMENT avec un objet JSON valide, sans balise Markdown, sans préambule : {"recit":"…","signature":"…"}`;
-        const resp = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: 'claude-sonnet-4-6',
-            max_tokens: 400,
-            system: sys,
-            messages: [{ role: 'user', content: reponsesText }]
-          })
-        });
-        if (!resp.ok) throw new Error('api');
-        const data = await resp.json();
-        const raw = (Array.isArray(data.content) ? data.content.map(b => b.text || '').join('') : '').trim();
-        const clean = raw.replace(/```json|```/g, '').trim();
-        const obj = JSON.parse(clean);
-        if (cancelled) return;
-        setRecit((obj.recit || '').trim());
-        setSignature((obj.signature || '').trim());
-        setRecitState('ready');
-      } catch {
-        if (cancelled) return;
-        setRecit(`Dans cette affaire, j'ai dû trancher à partir de documents qui se contredisaient. J'ai choisi de nommer les tensions avant de proposer une direction, plutôt que de produire une réponse lisse qui les aurait masquées.`);
-        setSignature(`Dans cette affaire, j'ai choisi de poser un diagnostic honnête avant de recommander — parce qu'une décision défendable vaut mieux qu'une note rassurante.`);
-        setRecitState('ready');
-      }
-    };
-    if (portfolioEarned) genRecit();
-    else setRecitState('skip');
-    return () => { cancelled = true; };
-  }, [portfolioEarned]);
-
-  const sendPortfolio = async () => {
-    if (sendState === 'sending' || sendState === 'sent' || !portfolioEarned) return;
-    if (!studentEmail) { setSendState('error'); return; }
-    setSendState('sending');
-    try {
-      const portfolioHTML = generatePortfolioHTML(studentName, acquises, today, { blocId, affaireTitre, livrableTitre, recit, signature, prenom });
-      const resp = await fetch('/api/send-portfolio', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: studentEmail, studentName, portfolioHTML,
-          bloc: blocId, acquises: acquises.map(c => c.code), date: today
-        })
-      });
-      const data = await resp.json().catch(() => ({}));
-      if (resp.ok && data.sent) setSendState('sent');
-      else setSendState('error');
-    } catch { setSendState('error'); }
-  };
-
-  const G = C_EMINEO;
-
-  // ════════════════ Portfolio NON délivré → bilan sobre ════════════════
-  if (!portfolioEarned) {
-    return (
-      <div style={{ height: '100%', overflowY: 'auto', background: G.givre, fontFamily: "'IBM Plex Sans', sans-serif" }}>
-        <div style={{ background: `linear-gradient(160deg, ${G.petrole} 0%, ${G.abysse} 100%)`, padding: '28px 32px 24px' }}>
-          <div style={{ fontSize: 11, color: G.saumon, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>
-            Bilan PAC · {blocId} · {today}
-          </div>
-          <div style={{ fontSize: 22, fontWeight: 300, color: 'white', lineHeight: 1.2, marginBottom: 8 }}>{studentName}</div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(232,155,119,0.15)', border: `1px solid ${G.saumon}`, borderRadius: 20, padding: '5px 14px' }}>
-            <span style={{ fontSize: 11, color: G.saumon, fontWeight: 600 }}>Portfolio non délivré — voir le détail ci-dessous</span>
-          </div>
-        </div>
-        <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {acquises.length > 0 && <CompetenceBlock title={`Compétences acquises — ${acquises.length}/${competences.length}`} comps={acquises} parsed={parsed} ok G={G} />}
-          {nonAcquises.length > 0 && <CompetenceBlock title={`À renforcer — ${nonAcquises.length}/${competences.length}`} comps={nonAcquises} parsed={parsed} G={G} />}
-          {parsed._question && (
-            <div style={{ background: G.abysse, borderRadius: 10, padding: '14px 18px' }}>
-              <div style={{ fontSize: 9, color: G.menthe, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>Question de jury à préparer</div>
-              <div style={{ fontSize: 13, color: 'white', lineHeight: 1.6, fontStyle: 'italic' }}>"{parsed._question}"</div>
-            </div>
-          )}
-          <div style={{ textAlign: 'center', padding: '8px 0 16px', fontSize: 10, color: G.petrole, opacity: 0.45, letterSpacing: '0.08em' }}>
-            PAC · Éminéo Éducation · MSMC RNCP 38504 · {today}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // ════════════════ Portfolio DÉLIVRÉ → carte façon PJ, charte Éminéo ════════════════
-  return (
-    <div style={{ height: '100%', overflowY: 'auto', background: G.givre, fontFamily: "'IBM Plex Sans', sans-serif", padding: '24px 22px 30px' }}>
-      <div style={{ maxWidth: 760, margin: '0 auto', background: 'white', borderRadius: 16, overflow: 'hidden', boxShadow: '0 8px 40px rgba(11,43,45,0.14)', border: `1px solid rgba(19,69,71,0.08)` }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr' }} className="pac-portfolio-grid">
-
-          {/* ── Volet image ── */}
-          <div style={{ position: 'relative', minHeight: 460, background: `linear-gradient(155deg, ${G.petrole} 0%, ${G.abysse} 100%)`, padding: '26px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden' }}>
-            {/* halo décoratif */}
-            <div style={{ position: 'absolute', top: -60, right: -60, width: 200, height: 200, borderRadius: '50%', background: `radial-gradient(circle, ${G.menthe}22 0%, transparent 70%)` }} />
-            <div style={{ position: 'relative' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
-                <svg width="30" height="30" viewBox="0 0 52 52" fill="none">
-                  <circle cx="26" cy="26" r="26" fill={G.givre}/>
-                  <circle cx="26" cy="22" r="8" fill={G.abysse}/>
-                  <path d="M26 30 C26 30 14 34 14 42 L38 42 C38 34 26 30 26 30Z" fill={G.abysse}/>
-                </svg>
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: 'white', letterSpacing: '0.02em' }}>emineo</div>
-                  <div style={{ fontSize: 8, color: G.menthe, letterSpacing: '0.18em', textTransform: 'uppercase' }}>ÉDUCATION</div>
-                </div>
-              </div>
-              <div style={{ display: 'inline-block', background: G.menthe, color: G.abysse, fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 20, letterSpacing: '0.04em' }}>
-                {blocId}
-              </div>
-            </div>
-            <div style={{ position: 'relative' }}>
-              <div style={{ fontSize: 10, color: G.menthe, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 8 }}>Portfolio de compétences</div>
-              <div style={{ fontSize: 22, fontWeight: 300, color: 'white', lineHeight: 1.25, marginBottom: 14 }}>{affaireTitre}</div>
-              <div style={{ height: 1, background: 'rgba(255,255,255,0.15)', margin: '14px 0' }} />
-              <div style={{ fontSize: 15, fontWeight: 600, color: 'white' }}>{studentName}</div>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', marginTop: 3 }}>{livrableMeta} · {today}</div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 14, background: 'rgba(93,226,152,0.15)', border: `1px solid ${G.menthe}`, borderRadius: 20, padding: '4px 12px' }}>
-                <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="10 3 5 9 2 6" stroke={G.menthe} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                <span style={{ fontSize: 10, color: G.menthe, fontWeight: 600 }}>{parsed._global?.label || 'Conforme'}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* ── Volet contenu ── */}
-          <div style={{ padding: '30px 32px' }}>
-
-            {/* Livrable produit */}
-            <div style={{ fontSize: 10, color: G.menthe, letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 700, marginBottom: 8 }}>Livrable produit</div>
-            <div style={{ fontSize: 19, fontWeight: 600, color: G.abysse, lineHeight: 1.3, marginBottom: 6 }}>{livrableTitre}</div>
-            <div style={{ fontSize: 12, color: G.petrole, opacity: 0.7, marginBottom: 10 }}>{globalWords} mots produits · {acquises.length}/{competences.length} compétences validées</div>
-            <div style={{ display: 'inline-block', background: G.givre, color: G.petrole, fontSize: 11, fontWeight: 600, padding: '4px 12px', borderRadius: 6 }}>
-              Évalué conforme par l'IA pédagogique
-            </div>
-
-            <div style={{ height: 1, background: 'rgba(19,69,71,0.1)', margin: '22px 0' }} />
-
-            {/* Compétences mobilisées */}
-            <div style={{ fontSize: 10, color: G.menthe, letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 700, marginBottom: 12 }}>Compétences mobilisées</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
-              {acquises.map(c => (
-                <div key={c.code} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-                  <div style={{ width: 18, height: 18, borderRadius: '50%', background: G.menthe, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
-                    <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><polyline points="8 2 4 8 2 5" stroke={G.abysse} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </div>
-                  <div style={{ fontSize: 13, color: G.abysse, lineHeight: 1.45 }}>
-                    <span style={{ fontWeight: 700, color: G.petrole, fontFamily: 'monospace', fontSize: 11, marginRight: 6 }}>{c.code}</span>
-                    {c.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div style={{ height: 1, background: 'rgba(19,69,71,0.1)', margin: '22px 0' }} />
-
-            {/* Récit + signature — première personne, éditable */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-              <div style={{ fontSize: 10, color: G.menthe, letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 700 }}>Ma posture</div>
-              {recitState === 'ready' && (
-                <button onClick={() => setEditing(e => !e)} style={{ background: 'none', border: `1px solid ${G.petrole}`, color: G.petrole, fontSize: 11, fontWeight: 600, padding: '3px 12px', borderRadius: 14, cursor: 'pointer', fontFamily: 'inherit' }}>
-                  {editing ? '✓ Terminer' : '✎ Modifier'}
-                </button>
-              )}
-            </div>
-
-            {recitState === 'loading' && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 0', color: G.petrole, opacity: 0.6, fontSize: 13, fontStyle: 'italic' }}>
-                <div style={{ width: 16, height: 16, border: `2px solid rgba(19,69,71,0.2)`, borderTopColor: G.petrole, borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
-                L'IA rédige une proposition de récit à partir de vos réponses…
-              </div>
-            )}
-
-            {recitState === 'ready' && (
-              <div style={{ background: `linear-gradient(135deg, ${G.givre} 0%, rgba(157,240,196,0.25) 100%)`, borderRadius: 12, padding: '20px 22px', position: 'relative' }}>
-                <div style={{ position: 'absolute', top: 8, left: 14, fontSize: 42, color: G.menthe, opacity: 0.5, fontFamily: 'Georgia, serif', lineHeight: 1 }}>“</div>
-                {editing ? (
-                  <>
-                    <textarea value={recit} onChange={e => setRecit(e.target.value)} rows={4}
-                      style={{ width: '100%', background: 'white', border: `1px solid ${G.menthe}`, borderRadius: 8, padding: '10px 12px', fontSize: 13.5, lineHeight: 1.6, color: G.abysse, fontFamily: 'inherit', resize: 'vertical', marginBottom: 10, marginTop: 8 }} />
-                    <textarea value={signature} onChange={e => setSignature(e.target.value)} rows={2}
-                      style={{ width: '100%', background: 'white', border: `1px solid ${G.menthe}`, borderRadius: 8, padding: '10px 12px', fontSize: 13, lineHeight: 1.5, color: G.petrole, fontStyle: 'italic', fontFamily: 'inherit', resize: 'vertical' }} />
-                  </>
-                ) : (
-                  <>
-                    <p style={{ fontSize: 14, lineHeight: 1.7, color: G.abysse, margin: '6px 0 14px', position: 'relative', zIndex: 1 }}>{recit}</p>
-                    <p style={{ fontSize: 13, lineHeight: 1.6, color: G.petrole, fontStyle: 'italic', margin: 0, paddingTop: 12, borderTop: `1px solid rgba(19,69,71,0.12)` }}>
-                      {signature}
-                    </p>
-                    <p style={{ fontSize: 12, color: G.petrole, fontWeight: 600, marginTop: 10, textAlign: 'right' }}>— {studentName}</p>
-                  </>
-                )}
-              </div>
-            )}
-
-            {/* Envoi portfolio */}
-            <div style={{ marginTop: 24 }}>
-              <div style={{ fontSize: 11, color: G.petrole, opacity: 0.65, marginBottom: 10 }}>
-                Recevez votre portfolio par email : <strong>{studentEmail || 'email non renseigné'}</strong>
-              </div>
-              <button onClick={sendPortfolio} disabled={sendState === 'sending' || sendState === 'sent'}
-                style={{ width: '100%', padding: '11px 0', background: sendState === 'sent' ? G.menthe : sendState === 'sending' ? 'rgba(19,69,71,0.4)' : G.abysse, color: sendState === 'sent' ? G.abysse : 'white', border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: (sendState === 'idle' || sendState === 'error') ? 'pointer' : 'default', transition: 'all .25s', fontFamily: 'inherit' }}>
-                {sendState === 'idle' && '📧 Recevoir mon portfolio →'}
-                {sendState === 'sending' && 'Envoi en cours…'}
-                {sendState === 'sent' && '✓ Portfolio envoyé'}
-                {sendState === 'error' && '⚠ Erreur — réessayez'}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer carte */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 28px', background: G.abysse }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 7, height: 7, borderRadius: '50%', background: G.menthe }} />
-            <span style={{ fontSize: 10.5, color: 'rgba(255,255,255,0.65)', letterSpacing: '0.04em' }}>PAC · Lumio Health · MSMC RNCP 38504</span>
-          </div>
-          <div style={{ fontSize: 10.5, color: 'rgba(255,255,255,0.5)' }}>Éminéo Éducation · {today}</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Bloc compétences réutilisable (bilan non-délivré)
-function CompetenceBlock({ title, comps, parsed, ok, G }) {
-  const accent = ok ? G.menthe : G.saumon;
-  return (
-    <div style={{ background: 'white', borderRadius: 10, overflow: 'hidden', border: `1px solid ${ok ? 'rgba(93,226,152,0.25)' : 'rgba(232,155,119,0.25)'}` }}>
-      <div style={{ padding: '12px 16px', background: ok ? G.abysse : 'rgba(232,155,119,0.12)', display: 'flex', alignItems: 'center', gap: 8 }}>
-        <span style={{ fontSize: 11, fontWeight: 700, color: accent, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{title}</span>
-      </div>
-      {comps.map((c, i) => (
-        <div key={c.code} style={{ padding: '10px 16px', borderBottom: i < comps.length - 1 ? `1px solid ${G.givre}` : 'none', display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-          <div style={{ width: 22, height: 22, borderRadius: '50%', background: ok ? G.menthe : 'rgba(232,155,119,0.15)', border: ok ? 'none' : `1px solid ${G.saumon}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
-            {ok
-              ? <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="8 2 4 8 2 5" stroke={G.abysse} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              : <span style={{ fontSize: 10, color: G.saumon, fontWeight: 700 }}>–</span>}
-          </div>
-          <div style={{ flex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
-              <span style={{ fontSize: 10, fontWeight: 700, color: G.petrole, fontFamily: 'monospace' }}>{c.code}</span>
-              <span style={{ fontSize: 12, fontWeight: 600, color: G.abysse }}>{c.label}</span>
-            </div>
-            <div style={{ fontSize: 10, color: accent, fontWeight: 600 }}>{parsed[c.code]?.niveau || (ok ? 'Acquise' : 'Non acquise')}</div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function generatePortfolioHTML(studentName, acquises, date, meta) {
-  meta = meta || {};
-  const blocId = meta.blocId || 'BC1';
-  const affaireTitre = meta.affaireTitre || 'Affaire Lumio Health';
-  const livrableTitre = meta.livrableTitre || 'Livrable certifiant PAC';
-  const recit = meta.recit || '';
-  const signature = meta.signature || '';
-  const comps = acquises.map(c =>
-    `<tr><td style="padding:7px 0;font-family:monospace;font-weight:700;color:#134547;font-size:11px;width:42px;vertical-align:top;">${c.code}</td><td style="padding:7px 0;font-size:13px;color:#0B2B2D;">${c.label}</td></tr>`
-  ).join('');
-  return `<!DOCTYPE html><html><body style="margin:0;background:#E3FFF0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:28px 16px;">
-<div style="max-width:600px;margin:0 auto;background:white;border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(11,43,45,0.14);">
-  <div style="background:linear-gradient(155deg,#134547,#0B2B2D);padding:30px 34px;">
-    <div style="font-size:13px;font-weight:700;color:white;letter-spacing:.02em;">emineo <span style="font-size:9px;color:#5DE298;letter-spacing:.18em;">ÉDUCATION</span></div>
-    <div style="display:inline-block;background:#5DE298;color:#0B2B2D;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-top:16px;">${blocId}</div>
-    <div style="font-size:10px;color:#5DE298;letter-spacing:.16em;text-transform:uppercase;margin-top:18px;">Portfolio de compétences</div>
-    <div style="font-size:22px;font-weight:300;color:white;line-height:1.25;margin:6px 0 14px;">${affaireTitre}</div>
-    <div style="font-size:15px;font-weight:600;color:white;">${studentName}</div>
-    <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px;">MSMC RNCP 38504 · Délivré le ${date}</div>
-  </div>
-  <div style="padding:26px 34px;">
-    <div style="font-size:10px;color:#5DE298;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:6px;">Livrable produit</div>
-    <div style="font-size:18px;font-weight:600;color:#0B2B2D;line-height:1.3;margin-bottom:18px;">${livrableTitre}</div>
-    <div style="font-size:10px;color:#5DE298;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:8px;">Compétences mobilisées</div>
-    <table style="width:100%;border-collapse:collapse;margin-bottom:8px;"><tbody>${comps}</tbody></table>
-    ${recit ? `<div style="background:linear-gradient(135deg,#E3FFF0,rgba(157,240,196,.25));border-radius:12px;padding:20px 22px;margin-top:18px;">
-      <div style="font-size:10px;color:#134547;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:10px;">Ma posture</div>
-      <p style="font-size:14px;line-height:1.7;color:#0B2B2D;margin:0 0 14px;">${recit}</p>
-      ${signature ? `<p style="font-size:13px;line-height:1.6;color:#134547;font-style:italic;margin:0;padding-top:12px;border-top:1px solid rgba(19,69,71,.12);">${signature}</p>` : ''}
-      <p style="font-size:12px;color:#134547;font-weight:600;margin:10px 0 0;text-align:right;">— ${studentName}</p>
-    </div>` : ''}
-  </div>
-  <div style="padding:14px 34px;background:#0B2B2D;font-size:10.5px;color:rgba(255,255,255,.6);">PAC · Lumio Health · MSMC RNCP 38504 · Éminéo Éducation · ${date}</div>
-</div></body></html>`;
-}
-
-
 function LivrableApp() {
   const cfg = window.PASS_CONFIG;
   const COMPETENCES = cfg ? cfg.competences : [];
@@ -442,6 +77,7 @@ function LivrableApp() {
   const [phase, setPhase] = React.useState('edit');
   const [juryFeedback, setJuryFeedback] = React.useState('');
   const [submitting, setSubmitting] = React.useState(false);
+  const [portfolioSent, setPortfolioSent] = React.useState(false);
   const scrollRef = React.useRef(null);
 
   const setAnswer = (code, val) => {
@@ -509,6 +145,25 @@ function LivrableApp() {
       const feedback = Array.isArray(data.content) ? data.content[0]?.text : 'Retour jury indisponible.';
       setJuryFeedback(feedback);
       setPhase('done');
+
+      // ── Complétion + envoi portfolio (best-effort, ne bloque pas l'UI) ──
+      try {
+        const _stu = (window.LUMIO_DATA && window.LUMIO_DATA.student) || {};
+        const _bloc = (window.PAC_CONFIG && window.PAC_CONFIG.bloc) || 'bc5';
+        if (_stu.email) {
+          const _html = '<div style="font-family:sans-serif;max-width:680px;margin:auto">'
+            + '<h1>Portfolio de compétences</h1>'
+            + '<p><b>' + (_stu.name || '') + '</b> · PAC ' + _bloc + '</p>'
+            + COMPETENCES.map(function(c){ return '<h3>' + c.code + ' — ' + c.label + '</h3>'
+                + '<p style="white-space:pre-wrap">' + ((answersEnriched[c.code]) || '') + '</p>'; }).join('')
+            + '<hr><h2>Retour du jury</h2><p style="white-space:pre-wrap">' + (result || '') + '</p></div>';
+          fetch('/api/send-portfolio', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ to: _stu.email, studentName: _stu.name, bloc: _bloc, html: _html })
+          }).catch(function(){ /* coche Redis best-effort, échec silencieux */ });
+        }
+      } catch (_) { /* no-op */ }
     } catch {
       setJuryFeedback('Le jury IA est temporairement indisponible. Votre contribution a été enregistrée.');
       setPhase('done');
@@ -518,19 +173,73 @@ function LivrableApp() {
 
   // ── Phase done ───────────────────────────────────────────────
   if (phase === 'done') {
-    const wordCounts = Object.fromEntries(COMPETENCES.map(c => [c.code, wc(answers[c.code])]));
+    const parseJuryResult = (text, code) => {
+      const re = new RegExp(`###\\s*${code.replace('.', '\\.')}[\\s\\S]*?\\[(Satisfaisant|Insuffisant|Absent)\\]`, 'i');
+      const m = text.match(re);
+      return m ? m[1] : null;
+    };
+    const globalRe = /##\s*Niveau de conformité global[\s\S]*?\*\*\[([^\]]+)\]\*\*/i;
+    const globalMatch = juryFeedback.match(globalRe);
+    const globalVerdict = globalMatch ? globalMatch[1] : null;
+
+    const verdictColor = (v) => {
+      if (!v) return '#888';
+      if (v.toLowerCase().includes('distinction')) return '#1a6641';
+      if (v.toLowerCase().includes('conforme') && !v.toLowerCase().includes('non') && !v.toLowerCase().includes('partiellement')) return '#1b4f8a';
+      if (v.toLowerCase().includes('partiellement')) return '#c4420f';
+      return '#8b1a1a';
+    };
+
     return (
-      <PortfolioScreen
-        studentName={window.LUMIO_DATA?.student?.name || 'Étudiant'}
-        studentEmail={window.LUMIO_DATA?.student?.email || ''}
-        competences={COMPETENCES}
-        wordCounts={wordCounts}
-        juryResult={juryFeedback}
-        globalWords={totalWords}
-        answers={answers}
-        blocLabel={cfg?.bloc || 'BC5'}
-        affaire={cfg?.titre_affaire || cfg?.accroche || ''}
-      />
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#f4f2ee', fontFamily: 'var(--font-sans)' }}>
+        <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(20,24,36,0.08)', background: 'white', display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.2em', color: '#c4420f', textTransform: 'uppercase' }}>PAC · BC5 · E7</div>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 600, color: '#141824' }}>Retour du jury certifiant</div>
+        </div>
+
+        <div style={{ flex: 1, overflowY: 'auto', padding: '24px' }}>
+          {globalVerdict && (
+            <div style={{ background: verdictColor(globalVerdict), color: 'white', borderRadius: 10, padding: '16px 20px', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div style={{ fontSize: 22 }}>{ globalVerdict.toLowerCase().includes('distinction') ? '★' : globalVerdict.toLowerCase().includes('non') ? '✗' : '✓' }</div>
+              <div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.15em', opacity: 0.85, marginBottom: 2 }}>VERDICT GLOBAL</div>
+                <div style={{ fontWeight: 600, fontSize: 15 }}>{globalVerdict}</div>
+              </div>
+            </div>
+          )}
+
+          <div style={{ background: 'white', borderRadius: 10, padding: '20px 24px', marginBottom: 16, border: '1px solid rgba(20,24,36,0.08)' }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.15em', color: '#5b6473', marginBottom: 12, textTransform: 'uppercase' }}>Évaluation par compétence</div>
+            {[...COMPETENCES.map(c => c.code), 'Note réflexive'].map(code => {
+              const result = parseJuryResult(juryFeedback, code);
+              const color = result === 'Satisfaisant' ? '#1a6641' : result === 'Absent' ? '#8b1a1a' : '#c4420f';
+              return (
+                <div key={code} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700, color: getTabColor(code === 'Note réflexive' ? 'reflexive' : code), minWidth: 80 }}>{code}</div>
+                  {result && <div style={{ background: color, color: 'white', borderRadius: 4, padding: '2px 8px', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em' }}>{result}</div>}
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{ background: 'white', borderRadius: 10, padding: '20px 24px', border: '1px solid rgba(20,24,36,0.08)', whiteSpace: 'pre-wrap', fontSize: 13, lineHeight: 1.8, color: '#2a3142', fontFamily: 'var(--font-display)' }}>
+            {juryFeedback}
+          </div>
+
+          {!portfolioSent && (
+            <button
+              onClick={() => setPortfolioSent(true)}
+              style={{ marginTop: 20, width: '100%', padding: '14px', background: '#134547', color: 'white', border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+              Envoyer au portfolio Éminéo →
+            </button>
+          )}
+          {portfolioSent && (
+            <div style={{ marginTop: 20, background: '#E3FFF0', border: '1px solid #5DE298', borderRadius: 8, padding: '14px', textAlign: 'center', fontSize: 13, color: '#134547', fontWeight: 600 }}>
+              ✓ Contribution et feedback envoyés dans votre portfolio Éminéo
+            </div>
+          )}
+        </div>
+      </div>
     );
   }
 
