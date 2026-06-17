@@ -232,7 +232,6 @@ function Dock({ openApp, openWindows, livrableUnlocked }) {
     { id: 'notepad', label: 'Bloc-notes' },
     { id: 'slack', label: 'Slack' },
     { id: 'calendar', label: 'Calendrier' },
-    { id: 'jefferson', label: 'Jefferson' },
     { id: 'trash', label: 'Corbeille' }
   ];
   const items = livrableUnlocked
@@ -514,12 +513,17 @@ function PacTimeline() {
 }
 
 
-function Desktop({ onLogout }) {
+function Desktop({ onLogout, timerStart }) {
+  // Reprise après reload : réassigne le timer fictif si la session le fournit
+  if (timerStart && !window.LUMIO_TIMER_START) window.LUMIO_TIMER_START = timerStart;
   const [windows, setWindows] = useWmState([]);
   const [zCounter, setZCounter] = useWmState(100);
   const [notifications, setNotifications] = useWmState([]);
   const [exchangeCount, setExchangeCount] = useWmState(0);
-  const [livrableUnlocked, setLivrableUnlocked] = useWmState(false);
+  // livrable_immediate = true dans PAC_CONFIG → livrable visible dès l'entrée (BC3, BC5, BC6)
+  const [livrableUnlocked, setLivrableUnlocked] = useWmState(
+    !!(window.PAC_CONFIG && window.PAC_CONFIG.livrable_immediate)
+  );
   const notifSeqRef = useWmRef(0);
 
   // Expose pour que SlackApp puisse incrémenter
@@ -811,6 +815,35 @@ Camille`
         <Dock openApp={openApp} openWindows={windows} livrableUnlocked={livrableUnlocked} />
         <PacTimeline />
         <NotificationStack notifications={notifications} onDismiss={dismissNotif} onClick={clickNotif} />
+        {/* Jefferson FAB — flottant bas-droite */}
+        {(() => {
+          const JeffFAB = window.LUMIO_APPS && window.LUMIO_APPS.jefferson_fab;
+          if (JeffFAB) return <JeffFAB openApp={openApp} />;
+          // Fallback : bouton simple si app-assistant ne fournit pas jefferson_fab
+          const JeffIcon = window.JeffersonIcon;
+          return (
+            <button
+              onClick={() => openApp('jefferson')}
+              title="Jefferson · Guide PAC"
+              style={{
+                position: 'fixed', bottom: 90, right: 16, zIndex: 9998,
+                width: 52, height: 52, borderRadius: '50%',
+                background: 'rgba(11,43,45,0.88)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '2px solid rgba(93,226,152,0.45)',
+                boxShadow: '0 4px 18px rgba(11,43,45,0.45)',
+                cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'all .2s'
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.boxShadow = '0 6px 24px rgba(93,226,152,0.35)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(11,43,45,0.45)'; }}
+            >
+              {JeffIcon ? <JeffIcon size={30} /> : <span style={{ fontSize: 22 }}>🐰</span>}
+            </button>
+          );
+        })()}
         {/* Bouton ? — aide à la demande */}
         <button
           onClick={() => openApp('finder', { openFolder: 'guide' })}
