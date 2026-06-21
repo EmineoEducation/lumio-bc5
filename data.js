@@ -501,6 +501,26 @@ Camille.`
 // ══════════════════════════════════════════════════════════════
 window.PASS_CONFIG = {
   bloc: 'bc5',
+  accroche_namescreen: {
+    "subtitle": "Projet IA Gen — conduire le changement",
+    "role": "consultant·e externe en transformation",
+    "intro": "Tu es {{STUDENT}}, consultant·e externe chez Lumio Health sur le Projet IA Gen : intégrer une innovation de rupture dans les outils marketing/communication, malgré les résistances internes et les enjeux RGPD et propriété intellectuelle. Tu produis ta contribution individuelle (PPI). Les documents posent les facteurs de rupture, les innovations à implémenter et la conduite du changement.",
+    "ratio_label": "3 semaines dans la vraie vie",
+    "regles": [
+      {
+        "ico": "📄",
+        "txt": "Tout ce que tu sais, c'est dans les documents du projet IA Gen."
+      },
+      {
+        "ico": "🤐",
+        "txt": "Le jury évalue ta lecture des facteurs de rupture, ta maîtrise RGPD/PI et ta conduite du changement."
+      },
+      {
+        "ico": "💬",
+        "txt": "Quand tu as une hypothèse solide → Slack → Sonia Ferracci. Sa réaction débloque la suite."
+      }
+    ]
+  },
   titre: 'Engager l\'innovation et la transformation digitale de la communication de la marque',
   epreuve: 'E7 — Proposition de mise en place d\'une transformation d\'outils ou canaux marketing communication induite par une innovation de rupture',
   deadline: 'Vendredi 25 avril 2027 · 18h00',

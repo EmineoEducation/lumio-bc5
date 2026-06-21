@@ -513,17 +513,12 @@ function PacTimeline() {
 }
 
 
-function Desktop({ onLogout, timerStart }) {
-  // Reprise après reload : réassigne le timer fictif si la session le fournit
-  if (timerStart && !window.LUMIO_TIMER_START) window.LUMIO_TIMER_START = timerStart;
+function Desktop({ onLogout }) {
   const [windows, setWindows] = useWmState([]);
   const [zCounter, setZCounter] = useWmState(100);
   const [notifications, setNotifications] = useWmState([]);
   const [exchangeCount, setExchangeCount] = useWmState(0);
-  // livrable_immediate = true dans PAC_CONFIG → livrable visible dès l'entrée (BC3, BC5, BC6)
-  const [livrableUnlocked, setLivrableUnlocked] = useWmState(
-    !!(window.PAC_CONFIG && window.PAC_CONFIG.livrable_immediate)
-  );
+  const [livrableUnlocked, setLivrableUnlocked] = useWmState(false);
   const notifSeqRef = useWmRef(0);
 
   // Expose pour que SlackApp puisse incrémenter
@@ -815,36 +810,8 @@ Camille`
         <Dock openApp={openApp} openWindows={windows} livrableUnlocked={livrableUnlocked} />
         <PacTimeline />
         <NotificationStack notifications={notifications} onDismiss={dismissNotif} onClick={clickNotif} />
-        {/* Jefferson FAB — flottant bas-droite */}
-        {(() => {
-          const JeffFAB = window.LUMIO_APPS && window.LUMIO_APPS.jefferson_fab;
-          if (JeffFAB) return <JeffFAB openApp={openApp} />;
-          // Fallback : bouton simple si app-assistant ne fournit pas jefferson_fab
-          const JeffIcon = window.JeffersonIcon;
-          return (
-            <button
-              onClick={() => openApp('jefferson')}
-              title="Jefferson · Guide PAC"
-              style={{
-                position: 'fixed', bottom: 90, right: 16, zIndex: 9998,
-                width: 52, height: 52, borderRadius: '50%',
-                background: 'rgba(11,43,45,0.88)',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                border: '2px solid rgba(93,226,152,0.45)',
-                boxShadow: '0 4px 18px rgba(11,43,45,0.45)',
-                cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transition: 'all .2s'
-              }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.boxShadow = '0 6px 24px rgba(93,226,152,0.35)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(11,43,45,0.45)'; }}
-            >
-              {JeffIcon ? <JeffIcon size={30} /> : <span style={{ fontSize: 22 }}>🐰</span>}
-            </button>
-          );
-        })()}
         {/* Bouton ? — aide à la demande */}
+        <JeffersonFab openApp={openApp} isOpen={windows.some(w => w.app === 'jefferson')} />
         <button
           onClick={() => openApp('finder', { openFolder: 'guide' })}
           title="Guide de mission"
@@ -865,6 +832,45 @@ Camille`
         >?</button>
       </div>
     </WindowsCtx.Provider>
+  );
+}
+
+
+// ═════ Jefferson FAB ═══════════════════════════════════════
+// Bouton flottant en bas à droite (hors dock). États visuels :
+// idle (gris), talking (animé quand la fenêtre Jefferson est ouverte).
+function JeffersonFab({ openApp, isOpen }) {
+  const Icon = window.JeffersonIcon;
+  const [hover, setHover] = useWmState(false);
+  useWmEffect(() => {
+    if (!document.getElementById('jefferson-fab-style')) {
+      const s = document.createElement('style'); s.id = 'jefferson-fab-style';
+      s.textContent = '@keyframes jefferson-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}.jefferson-talking{animation:jefferson-pulse 1.4s ease-in-out infinite}';
+      document.head.appendChild(s);
+    }
+  }, []);
+  return (
+    <button
+      onClick={() => openApp('jefferson')}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      title="Jefferson · Guide PAC"
+      className={isOpen ? 'jefferson-talking' : ''}
+      style={{
+        position: 'fixed', bottom: 22, right: 22, zIndex: 9998,
+        width: 60, height: 60, borderRadius: '50%',
+        background: 'rgba(245,243,239,0.78)',
+        backdropFilter: 'blur(20px) saturate(1.4)',
+        WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
+        border: '1px solid rgba(255,255,255,0.5)',
+        boxShadow: hover ? '0 14px 36px rgba(20,24,36,0.28)' : '0 8px 22px rgba(20,24,36,0.18)',
+        cursor: 'pointer', padding: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        transition: 'transform 220ms cubic-bezier(.34,1.56,.64,1), box-shadow 220ms ease',
+        transform: hover ? 'translateY(-3px) scale(1.04)' : 'none'
+      }}>
+      {Icon ? <Icon size={42} /> : <span style={{ fontSize: 24 }}>🐰</span>}
+    </button>
   );
 }
 
