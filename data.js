@@ -645,3 +645,7 @@ window.PASS_CONFIG = {
     content: { nom: 'Yassine Morel', role: 'Content Manager', avatar: 'YM', couleur: '#2d6a4f' }
   }
 };
+
+
+// Alias de compatibilité — les apps génériques lisent window.PAC_CONFIG
+window.PAC_CONFIG = window.PASS_CONFIG;
