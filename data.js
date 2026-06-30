@@ -501,6 +501,26 @@ Camille.`
 // ══════════════════════════════════════════════════════════════
 window.PASS_CONFIG = {
   bloc: 'bc5',
+  accroche_namescreen: {
+    "subtitle": "Projet IA Gen — conduire le changement",
+    "role": "consultant·e externe en transformation",
+    "intro": "Tu es {{STUDENT}}, consultant·e externe chez Lumio Health sur le Projet IA Gen : intégrer une innovation de rupture dans les outils marketing/communication, malgré les résistances internes et les enjeux RGPD et propriété intellectuelle. Tu produis ta contribution individuelle (PPI). Les documents posent les facteurs de rupture, les innovations à implémenter et la conduite du changement.",
+    "ratio_label": "3 semaines dans la vraie vie",
+    "regles": [
+      {
+        "ico": "📄",
+        "txt": "Tout ce que tu sais, c'est dans les documents du projet IA Gen."
+      },
+      {
+        "ico": "🤐",
+        "txt": "Le jury évalue ta lecture des facteurs de rupture, ta maîtrise RGPD/PI et ta conduite du changement."
+      },
+      {
+        "ico": "💬",
+        "txt": "Quand tu as une hypothèse solide → Slack → Sonia Ferracci. Sa réaction débloque la suite."
+      }
+    ]
+  },
   titre: 'Engager l\'innovation et la transformation digitale de la communication de la marque',
   epreuve: 'E7 — Proposition de mise en place d\'une transformation d\'outils ou canaux marketing communication induite par une innovation de rupture',
   deadline: 'Vendredi 25 avril 2027 · 18h00',
@@ -625,8 +645,13 @@ window.PASS_CONFIG = {
     content: { nom: 'Yassine Morel', role: 'Content Manager', avatar: 'YM', couleur: '#2d6a4f' }
   }
 };
-// [PATCH] Correction bug #1 — adapter memoVocal → camilleVerbatims pour app-voice.jsx
-if (window.LUMIO_DATA && window.LUMIO_DATA.memoVocal && !window.LUMIO_DATA.camilleVerbatims && !window.LUMIO_DATA.voiceMemos) {
-  const mv = window.LUMIO_DATA.memoVocal;
-  window.LUMIO_DATA.voiceMemos = [{ title: mv.title || 'Mémo vocal', author: mv.from || '', role: mv.role || '', date: mv.date || '', durationSec: mv.durationSec || 154, transcript: mv.transcript || '', context: mv.context || '' }];
-}
+
+// === [PAC v2 complétion] juryPrompt + dispositif + accroche — auto-ajout ===
+(function() {
+  var cfg = window.PAC_CONFIG || window.PASS_CONFIG;
+  if (!cfg) return;
+  if (!cfg.juryPrompt) cfg.juryPrompt = "Tu es le jury certifiant du bloc 5 (Manager Stratégie Marketing & Communication — MSMC, RNCP 38504).\nContexte : Lumio Health — Proposition de mise en place d'une transformation des outils ou canaux marketing/communication induite par une innovation de rupture (IA générative). Enjeux RGPD (incident DataViz Studio), propriété intellectuelle (visuel Léa Ferron), conformité EU AI Act (échéance 2 mai 2027), engagement RSE. Résistances internes à anticiper. Avril 2027.\nTu évalues une production étudiante aux critères RNCP stricts. Sois exigeant mais juste.\nCritères éliminatoires :\n- Les facteurs de rupture (C.20-II) ne sont pas hiérarchisés en termes d'opportunités et de risques explicites pour Lumio, ni adossés à une veille prospective documentée : la compétence est invalidée.\n- Les innovations à implémenter (C.21-II) sont listées sans rôles ni responsabilités attribués (directions impactées, garde-fous, indicateurs de conformité RGPD / PI / AI Act / RSE) : invalidation immédiate.\n- Aucun KPI mesurable n'est associé aux innovations proposées (impact business ou conformité), rendant le pilotage du déploiement impossible : la compétence C.21-II est insuffisante.\n- La conduite du changement (C.22-II) ignore les résistances internes documentées ou ne propose ni ambassadeurs, ni dispositif de cocréation, ni plan de formation différencié par profils : invalidation C.22-II.\n- Aucune référence n'est faite aux contraintes juridiques actives (RGPD, EU AI Act, propriété intellectuelle) ou aux mesures de mitigation des incidents précédents (DataViz Studio, Léa Ferron) : le dossier est déclaré non conforme.\n\nRéponds EXACTEMENT dans ce format :\n### C.20-II — [Satisfaisant / Insuffisant / Absent]\nUne phrase de retour précise et exigeante.\n\n### C.21-II — [Satisfaisant / Insuffisant / Absent]\nUne phrase de retour précise et exigeante.\n\n### C.22-II — [Satisfaisant / Insuffisant / Absent]\nUne phrase de retour précise et exigeante.\n\n## Niveau global\n**[Non conforme / Partiellement conforme / Conforme / Conforme avec distinction]**\n\n## Question de jury\nUne question dérangeante que tu poserais à l'oral.";
+  window.PAC_CONFIG = cfg;
+  window.PASS_CONFIG = cfg;
+})();
+// === [PAC v2 complétion] fin ===
