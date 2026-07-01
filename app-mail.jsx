@@ -14,9 +14,9 @@ function MailApp({ winId, openId }) {
       fromEmail: 'sonia@lumio-health.com',
       avatar: 'SF',
       avatarColor: '#c4420f',
-      subject: 'Mission de pilotage campagne — urgent — confidentiel',
-      date: '19/01/27 · 07:15',
-      preview: 'Lou, Je te contacte en urgence. J\'ai besoin de toi aujourd\'hui…',
+      subject: 'Mission — Contribution individuelle Projet IA Gen · deadline vendredi',
+      date: '21/04/27 · 08:15',
+      preview: 'Bonjour, Je vais être directe parce que le temps presse. Le projet d\'intégration IA Gen…',
       unread: false,
       flagged: true,
       body: D.briefEmail.body,
@@ -28,40 +28,19 @@ function MailApp({ winId, openId }) {
       fromEmail: 'theo@lumio-health.com',
       avatar: 'TM',
       avatarColor: '#5c2d8f',
-      subject: 'FWD : Réactions jury — Campagne Fantôme de Soi',
-      date: '18/01/27 · 22:47',
-      preview: 'Sonia, Je te transmets les retours du jury interne sur la campagne…',
+      subject: 'Re: Projet IA Gen — questions que personne ne pose',
+      date: '18/04/27 · 22:43',
+      preview: 'Sonia, Je t\'écris en dehors des réunions parce que je n\'ai pas obtenu de réponses…',
       unread: false,
       forwarded: true,
-      body: D.ceoEmail.body,
+      body: D.theoEmail.body,
       tags: ['TRANSFÉRÉ', 'CONFIDENTIEL'],
       header: {
-        from: D.ceoEmail.from,
-        to: D.ceoEmail.to,
-        cc: D.ceoEmail.cc,
-        subject: D.ceoEmail.subject,
-        date: D.ceoEmail.date
-      }
-    },
-    {
-      id: 'decathlon',
-      from: 'Hélène Marchand',
-      fromEmail: 'h.marchand@decathlon.com',
-      avatar: 'HM',
-      avatarColor: '#0055a5',
-      subject: 'Retour sur votre campagne actuelle',
-      date: '17/01/27 · 11:34',
-      preview: 'Bonjour Sonia, Je me permets de vous écrire directement car nous avons une relation de confiance…',
-      unread: true,
-      flagged: true,
-      body: D.decathlonEmail.body,
-      tags: ['CLIENT', 'RISQUE'],
-      header: {
-        from: D.decathlonEmail.from,
-        to: D.decathlonEmail.to,
-        cc: D.decathlonEmail.cc,
-        subject: D.decathlonEmail.subject,
-        date: D.decathlonEmail.date
+        from: D.theoEmail.from,
+        to: D.theoEmail.to,
+        cc: D.theoEmail.cc,
+        subject: D.theoEmail.subject,
+        date: D.theoEmail.date
       }
     },
     // Emails distracteurs
@@ -126,7 +105,7 @@ function MailApp({ winId, openId }) {
         <div style={mailStyles.sbItem}><span>📝</span><span>Brouillons</span></div>
         <div style={mailStyles.sbItem}><span>🗑</span><span>Corbeille</span></div>
         <div style={{...mailStyles.sbHead, marginTop: 16}}>Dossiers intelligents</div>
-        <div style={mailStyles.sbItem}><span>🔴</span><span>Mission Lumio</span><span style={mailStyles.sbCount}>3</span></div>
+        <div style={mailStyles.sbItem}><span>🔴</span><span>Mission Lumio</span><span style={mailStyles.sbCount}>2</span></div>
       </div>
 
       <div style={mailStyles.list} className="scroll">
