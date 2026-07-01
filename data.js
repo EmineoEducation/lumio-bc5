@@ -27,12 +27,18 @@ Son produit phare : le Lumio Patch — un capteur physiologique porté au poigne
 qui mesure variabilité cardiaque, conductance cutanée et température, traités
 par un algorithme propriétaire pour produire un « score de stress » continu.
 
+L'entreprise compte aujourd'hui 52 salariés, contre 34 il y a deux ans — une
+croissance portée presque entièrement par le B2B (180 entreprises clientes
+actives) qui reste, en avril 2027, la source de 94% du chiffre d'affaires.
+
 OÙ EN EST LUMIO EN AVRIL 2027 ?
 
 Bonne nouvelle : la certification MDR (règlement européen sur les dispositifs
 médicaux) a été obtenue en mars 2027 — un mois de retard sur le calendrier
 prévu, mais c'est fait. Lumio peut désormais revendiquer légalement une fonction
-médicale. L'accord Darty Santé (50 000 unités B2C) peut se concrétiser.
+médicale. L'accord Darty Santé (50 000 unités B2C) peut se concrétiser. C'est
+la première fois depuis la création de l'entreprise qu'un canal de vente grand
+public devient réellement disponible.
 
 Mauvaise nouvelle : Sonia Ferracci a lancé en février un projet d'intégration
 de l'IA générative dans la production de contenus marcom, sans attendre la MDR.
@@ -51,23 +57,37 @@ LES TROIS SIGNAUX D'ALERTE
 3. Résistance interne — L'équipe commerciale B2B refuse d'utiliser des contenus
    générés par IA dans ses échanges clients. Trois DRH ont exprimé des réserves.
 
+Ces trois signaux ne sont pas de même nature : le premier est un risque de
+conformité déjà matérialisé, le second un risque encore hypothétique, le
+troisième un problème humain qui ne se résoudra pas par une clause contractuelle.
+Les traiter avec le même niveau d'urgence serait une erreur de lecture.
+
 LES PERSONNAGES CLÉS EN AVRIL 2027
 
 — Sonia Ferracci · Directrice Marketing
   Pilote le projet IA Gen. Convaincue de son potentiel. Minimise les alertes.
-  Budget annuel : 380 000€ (partiellement validé depuis la MDR).
+  Budget annuel : 380 000€ (partiellement validé depuis la MDR). En poste
+  depuis janvier 2026, elle porte ce projet comme la preuve que sa direction
+  peut faire bouger Lumio plus vite que ne le pensait le board.
 
 — Théo Marczak · CEO fondateur
   Pose les questions juridiques que personne ne veut entendre.
-  A transmis 5 questions non résolues à Sonia par email.
+  A transmis 5 questions non résolues à Sonia par email. Il n'est pas hostile
+  à l'IA Gen par principe — il l'a dit explicitement à plusieurs reprises —
+  mais il porte seul, en tant que CEO, la responsabilité légale de toute
+  décision non conforme, ce qui explique sa prudence.
 
 — Yassine Morel · Content Manager
   Pilote opérationnel du projet. A signé le contrat DataViz Studio seul,
   sans validation juridique. Enthousiaste mais sous-dimensionné sur les risques.
+  C'est lui qui a présenté le projet en interne comme un gain de temps de 60%
+  sur la production visuelle — un chiffre qui a convaincu Sonia d'accélérer.
 
 — Camille Ott · Responsable partenariats B2B
   Relais terrain de la résistance commerciale. A co-signé une pétition interne
-  (non officielle) demandant un moratoire IA Gen en B2B.
+  (non officielle) demandant un moratoire IA Gen en B2B. Sur les 180 clients
+  B2B actifs, elle estime qu'une vingtaine sont "à risque de réaction négative"
+  si l'IA Gen touchait leurs échanges commerciaux directs.
 
 VOTRE MISSION
 
@@ -90,8 +110,9 @@ Deadline : vendredi 25 avril 2027 · 18h00.`
 Je vais être directe parce que le temps presse.
 
 Le projet d'intégration IA Gen que j'ai lancé en février avance bien dans
-l'ensemble — mais il y a quelques points sensibles à régler avant qu'on
-présente ça au CODIR de fin avril.
+l'ensemble — 47 visuels produits en trois semaines, un gain de temps réel sur
+la production, et une équipe motivée. Mais il y a quelques points sensibles
+à régler avant qu'on présente ça au CODIR de fin avril.
 
 Ce que je vous demande : produire la contribution individuelle BC5 attendue
 dans le cadre de votre formation. Pas un audit, pas une liste de problèmes —
@@ -105,11 +126,17 @@ qu'il dramatise), les notes du CODIR du 14 avril, et la veille de Yassine
 sur Maddyness.
 
 Une chose à savoir : Théo a décidé de vous contacter directement.
-Vous pouvez l'écouter — mais la commande reste la mienne.
+Vous pouvez l'écouter — mais la commande reste la mienne. Je vous le dis
+sans détour parce que je préfère que vous le sachiez dès le début plutôt
+que d'avoir l'impression, en cours de mission, de recevoir deux instructions
+contradictoires de deux personnes différentes.
 
 Ce que j'attends vendredi : une proposition qui dit OUI à l'IA Gen,
 avec des garde-fous sérieux et un plan de déploiement réaliste.
-Pas un "peut-être si les conditions sont réunies".
+Pas un "peut-être si les conditions sont réunies". On a une fenêtre de
+6 à 8 semaines avant que nos concurrents directs (Biostream, Neuroflow)
+n'aient rattrapé notre avance sur ce sujet — je ne veux pas la perdre
+sur un principe de précaution qu'on peut cadrer intelligemment.
 
 Sonia Ferracci
 Directrice Marketing — Lumio Health
@@ -135,25 +162,38 @@ pas la contribution au CODIR.
 1. PROPRIÉTÉ DES OUTPUTS — Qui détient les droits sur les contenus générés ?
    Le contrat DataViz Studio dit "licence d'usage" — pas propriété pleine.
    Si Lumio n'est pas propriétaire des visuels, on ne peut pas les utiliser
-   dans nos campagnes sans risque de litige.
+   dans nos campagnes sans risque de litige. Et si on n'est pas propriétaires,
+   qu'est-ce qui empêche DataViz Studio de revendre le même type de visuel
+   généré à un concurrent direct ?
 
 2. RESPONSABILITÉ PI — Le visuel Léa Ferron. Même si la ressemblance est
    "partielle", en droit français le critère c'est l'originalité de l'œuvre
    reproduite, pas le pourcentage de similarité. Nos assureurs ont été informés ?
+   Et est-ce qu'on a vérifié si d'autres visuels de la série posent le même
+   risque avec d'autres photographes ou illustrateurs qu'on n'a pas identifiés ?
 
 3. RGPD ET DONNÉES D'ENTRAÎNEMENT — Les données clients utilisées par DataViz
    Studio : nos DPO sont au courant ? Le registre de traitement a été mis à jour ?
-   Si on fait l'objet d'un contrôle CNIL maintenant, on répond comment ?
+   Si on fait l'objet d'un contrôle CNIL maintenant, on répond comment ? Je te
+   rappelle qu'on a 180 clients B2B qui nous font confiance sur exactement ce
+   sujet — la confidentialité des données de santé au travail. Si l'un d'eux
+   apprend que ses propres données ont nourri un modèle tiers, on perd bien
+   plus qu'un contrat.
 
 4. EU AI ACT — L'acte entre en phase d'application en mai 2027. Les systèmes IA
    utilisés dans un contexte médical ou para-médical sont classés "haut risque".
-   Notre DPO a évalué si Lumio Patch + IA Gen = système à haut risque ?
+   Notre DPO a évalué si Lumio Patch + IA Gen = système à haut risque ? Si oui,
+   on a moins de trois semaines pour s'y conformer, pas trois mois.
 
 5. ASSUREURS — Notre police RC Pro couvre-t-elle les dommages issus d'un contenu
-   généré par IA qui causerait un préjudice à un tiers ?
+   généré par IA qui causerait un préjudice à un tiers ? Je n'ai pas la réponse
+   et personne dans l'équipe ne semble l'avoir non plus, ce qui m'inquiète
+   presque autant que la question elle-même.
 
 Je ne suis pas contre l'IA générative. Je suis contre déployer quelque chose
-qu'on ne comprend pas encore pleinement sur le plan juridique.
+qu'on ne comprend pas encore pleinement sur le plan juridique — surtout
+maintenant, alors qu'on vient d'obtenir la MDR et qu'on n'a jamais été aussi
+exposés à un contrôle réglementaire qu'aujourd'hui.
 
 Si la contribution répond à ces cinq questions, je serai le premier
 à soutenir le projet au CODIR.
@@ -188,7 +228,10 @@ client fournies par Lumio" pour "améliorer la pertinence des outputs IA".
 - Les verbatims DRH issus des enquêtes de satisfaction 2024-2026
 - Les données NPS segmentées par secteur
 
-dans le pipeline d'entraînement de son modèle de personnalisation.
+dans le pipeline d'entraînement de son modèle de personnalisation. Sur
+demande explicite le 13 avril, DataViz Studio a confirmé par écrit que ces
+données concernaient environ 60 des 180 comptes clients B2B actifs de Lumio
+— ceux dont les données étaient les plus complètes dans notre CRM.
 
 ─── ANALYSE CONTRACTUELLE ───────────────────────────────────────────
 
@@ -197,19 +240,31 @@ l'article 4.2 une clause stipulant que DataViz Studio peut utiliser
 "les données fournies par le client à des fins d'optimisation du service".
 
 Cette clause n'a pas été soumise à validation juridique avant signature.
-Elle n'a pas non plus été signalée au DPO de Lumio Health.
+Elle n'a pas non plus été signalée au DPO de Lumio Health. Le contrat ne
+prévoit par ailleurs aucune durée de conservation des données transmises,
+ni de clause d'audit permettant à Lumio de vérifier l'usage réel qui en
+est fait — nous découvrons cet usage a posteriori, par un mentionnement
+oral, pas par un mécanisme de contrôle prévu au contrat.
 
 ─── RISQUES IDENTIFIÉS ──────────────────────────────────────────────
 
 RGPD : Les données clients utilisées contiennent des informations nominatives
 sur des personnes physiques (contacts DRH). Leur utilisation à des fins
-d'entraînement IA constitue un traitement de données non déclaré.
+d'entraînement IA constitue un traitement de données non déclaré. Le délai
+légal de notification à la CNIL en cas de violation avérée est de 72 heures
+à compter de la connaissance des faits — nous sommes à J+3 sans notification
+ni décision sur l'opportunité d'en faire une.
 
 CONTRACTUEL : Le contrat DataViz Studio ne prévoit pas de clause de
-restitution ou destruction des données en fin de mission.
+restitution ou destruction des données en fin de mission. Même en cas de
+rupture immédiate du contrat, rien n'oblige aujourd'hui le prestataire à
+supprimer les données déjà intégrées à son modèle.
 
 RÉPUTATIONNEL : Si un client Lumio apprend que ses données ont alimenté
-un modèle IA tiers sans son consentement, impact potentiel sur la relation.
+un modèle IA tiers sans son consentement, impact potentiel sur la relation
+— particulièrement sensible pour les comptes historiques (certains clients
+depuis l'origine de l'entreprise en 2018) dont la confiance repose en grande
+partie sur la réputation de rigueur de Lumio en matière de données de santé.
 
 ─── INCIDENT VISUEL PI ──────────────────────────────────────────────
 
@@ -217,12 +272,18 @@ Un visuel généré le 8 avril pour la campagne "Lumio B2C — Lancement grand
 public" présente une composition et un traitement colorimétrique très proches
 du style de Léa Ferron (agence Mirage), photographe connue dans le secteur
 santé/bien-être. Léa Ferron a été informée par un confrère. Aucun contact
-officiel à ce jour, mais le risque de mise en demeure est réel.
+officiel à ce jour, mais le risque de mise en demeure est réel. Le visuel
+en question a déjà été vu par environ 40 000 personnes en test A/B interne
+avant d'être retiré de la rotation par précaution le 11 avril, la veille
+même de la découverte de l'incident RGPD.
 
 ─── RECOMMANDATION IMMÉDIATE ────────────────────────────────────────
 
 Suspendre l'utilisation des outputs DataViz Studio jusqu'à clarification
-contractuelle et validation par le service juridique et le DPO.
+contractuelle et validation par le service juridique et le DPO. Établir en
+parallèle une cartographie complète des 60 comptes clients concernés par
+l'incident RGPD, pour être en mesure de répondre rapidement si l'un d'eux
+pose la question directement.
 
 Yassine Morel · Content Manager · Lumio Health`
   },
@@ -242,10 +303,14 @@ SONIA FERRACCI
 Présente les premiers outputs du projet : 47 visuels générés,
 3 séries de textes campaigns B2C, 1 prototype de personnalisation
 email par segment cible. Résultats de production encourageants :
-gain de temps estimé à 60% sur la production visuelle.
+gain de temps estimé à 60% sur la production visuelle, soit environ
+3 semaines de délai gagnées sur le calendrier de lancement B2C prévu
+suite à l'obtention de la MDR.
 
 Reconnaît l'"incident DataViz" mais estime que "c'est contractuellement
 gérable" et que "ça ne remet pas en question la direction du projet".
+Propose de renégocier la clause 4.2 du contrat plutôt que de suspendre
+la collaboration.
 
 Demande une validation de principe pour continuer jusqu'au lancement B2C.
 
@@ -257,7 +322,9 @@ transmises par email. Mentionne l'EU AI Act (mai 2027) et le risque
 de classification "système haut risque" pour Lumio.
 
 Demande un audit juridique complet avant toute communication externe
-utilisant des contenus IA Gen.
+utilisant des contenus IA Gen. Rappelle qu'un contrôle CNIL peut survenir
+sans préavis et que Lumio n'a, à ce stade, ni notifié l'incident ni mis
+à jour son registre de traitement.
 
 Position : "On ne peut pas lancer une campagne B2C avec des contenus
 dont on ne maîtrise pas la propriété ni la conformité réglementaire."
@@ -270,7 +337,9 @@ Le B2B ne doit pas être touché : "Nos clients DRH ont une relation
 de confiance avec nos commerciaux. Un contenu généré par machine
 dans ce contexte, c'est un signal de désengagement."
 
-Mentionne 3 clients qui ont déjà exprimé des réserves verbalement.
+Mentionne 3 clients qui ont déjà exprimé des réserves verbalement, et
+précise qu'une partie de son équipe commerciale a également fait
+remonter des inquiétudes en interne — pas seulement les clients.
 
 ─────────────────────────────────────────────────────
 
@@ -294,15 +363,15 @@ Une contribution externe est attendue pour objectiver la situation.`
 
 Le résultat ? 47 visuels de campagne produits en 3 semaines. Zéro agence. Zéro brief de 12 pages. Un prompt bien construit, un modèle entraîné sur nos codes visuels, et des outputs qui tiennent la route.
 
-Est-ce que tout est parfait ? Non. Est-ce qu'on a tout anticipé ? Clairement pas. Mais pendant qu'on teste, Biostream vient d'annoncer son partenariat avec MidJourney pour sa production visuelle grand public. Neuroflow déploie ChatGPT en interne pour ses équipes content. Le secteur bouge.
+Est-ce que tout est parfait ? Non. Est-ce qu'on a tout anticipé ? Clairement pas. Mais pendant qu'on teste, Biostream vient d'annoncer son partenariat avec MidJourney pour sa production visuelle grand public. Neuroflow déploie ChatGPT en interne pour ses équipes content. Le secteur bouge, et il bouge vite : il y a un an, aucun de nos trois concurrents directs n'utilisait l'IA générative en production. Aujourd'hui c'est la norme émergente, pas l'exception.
 
 La vraie question pour une marque comme Lumio, c'est : à quel moment le "on attend d'être sûrs" devient-il du retard qu'on ne rattrapera pas ?
 
-Sur le RGPD et la PI, je ne vais pas prétendre que c'est simple. Ça ne l'est pas. Mais la réponse ne peut pas être "on arrête". La réponse, c'est "on cadre mieux". Et c'est ce qu'on fait.
+Sur le RGPD et la PI, je ne vais pas prétendre que c'est simple. Ça ne l'est pas. On a eu notre propre alerte en interne il y a quelques jours, et on la traite avec le sérieux qu'elle mérite. Mais la réponse ne peut pas être "on arrête". La réponse, c'est "on cadre mieux". Et c'est ce qu'on fait.
 
-L'EU AI Act arrive en mai. Oui. Est-ce que Lumio est concernée au titre des systèmes "haut risque" ? Franchement, je ne sais pas. Ce que je sais, c'est qu'attendre la réponse de nos juristes pour lancer la moindre expérimentation IA, c'est s'assurer d'arriver en retard dans chaque cycle d'innovation.
+L'EU AI Act arrive en mai. Oui. Est-ce que Lumio est concernée au titre des systèmes "haut risque" ? Franchement, je ne sais pas — c'est une question pour nos juristes, pas pour moi. Ce que je sais, c'est qu'attendre la réponse de nos juristes pour lancer la moindre expérimentation IA, c'est s'assurer d'arriver en retard dans chaque cycle d'innovation.
 
-Les marques qui gagnent en 2027, ce sont celles qui ont appris à courir avec des garde-fous — pas celles qui ont attendu que les garde-fous soient parfaits pour commencer à courir.`
+Les marques qui gagnent en 2027, ce sont celles qui ont appris à courir avec des garde-fous — pas celles qui ont attendu que les garde-fous soient parfaits pour commencer à courir. C'est le pari qu'on fait chez Lumio. On verra dans six mois si j'avais raison de l'écrire aussi franchement.`
     },
     {
       url: "lesstrat.fr/eu-ai-act-medtech-mai-2027",
@@ -317,11 +386,11 @@ La réglementation distingue quatre niveaux de risque. Les systèmes IA classés
 
 La question que beaucoup de directions juridiques n'ont pas encore tranchée : est-ce qu'un outil d'IA générative utilisé par une marque medtech — même uniquement pour produire des contenus marketing — tombe dans cette catégorie ?
 
-La réponse courte : peut-être. Si le contenu généré est utilisé pour communiquer sur les bénéfices d'un dispositif médical, ou si les données utilisées pour entraîner ou personnaliser le modèle incluent des données de santé, la classification "haut risque" peut s'appliquer.
+La réponse courte : peut-être. Si le contenu généré est utilisé pour communiquer sur les bénéfices d'un dispositif médical, ou si les données utilisées pour entraîner ou personnaliser le modèle incluent des données de santé, la classification "haut risque" peut s'appliquer. Le critère déterminant, selon plusieurs juristes spécialisés, n'est pas l'outil en lui-même mais son usage concret et le type de données qui l'alimente — ce qui signifie que deux entreprises utilisant exactement le même prestataire IA peuvent se retrouver dans deux catégories de risque différentes.
 
-Les sanctions prévues par l'AI Act pour non-conformité : jusqu'à 30 millions d'euros ou 6% du chiffre d'affaires mondial, selon le cas.
+Les sanctions prévues par l'AI Act pour non-conformité : jusqu'à 30 millions d'euros ou 6% du chiffre d'affaires mondial, selon le cas — un niveau de sanction comparable à celui du RGPD à ses débuts, et qui a déjà servi d'argument à plusieurs directions juridiques pour obtenir des budgets de mise en conformité qu'elles réclamaient depuis des mois.
 
-Plusieurs cabinets juridiques spécialisés estiment qu'entre 30 et 40% des entreprises medtech françaises n'ont pas encore conduit d'évaluation formelle de leurs outils IA au regard de l'AI Act. Le délai pour se mettre en conformité est désormais mesuré en semaines, pas en mois.`
+Plusieurs cabinets juridiques spécialisés estiment qu'entre 30 et 40% des entreprises medtech françaises n'ont pas encore conduit d'évaluation formelle de leurs outils IA au regard de l'AI Act. Le délai pour se mettre en conformité est désormais mesuré en semaines, pas en mois. Certains cabinets recommandent, à ce stade, de traiter par défaut tout usage de l'IA générative associé à un dispositif médical comme "haut risque" jusqu'à preuve du contraire — une posture prudente mais coûteuse en délais de mise sur le marché.`
     },
     {
       url: "cbradio-tech.fr/ia-gen-marques-sante-risques",
@@ -330,17 +399,17 @@ Plusieurs cabinets juridiques spécialisés estiment qu'entre 30 et 40% des entr
       author: "par Sarah Klink",
       headline: "IA générative : les cinq erreurs que les directions marketing font encore",
       lede: "Déployer vite, cadrer après. Ce modèle a un coût — et pas seulement juridique.",
-      body: `Depuis 18 mois, CB News Tech documente les déploiements IA Gen dans les directions marketing de PME et ETI françaises. Le bilan est contrasté : des gains de productivité réels, des angles morts récurrents.
+      body: `Depuis 18 mois, CB News Tech documente les déploiements IA Gen dans les directions marketing de PME et ETI françaises. Le bilan est contrasté : des gains de productivité réels, des angles morts récurrents — et souvent les mêmes, d'une entreprise à l'autre.
 
-Erreur n°1 : Signer des contrats prestataires sans clause de protection des données d'entraînement. Les modèles IA se nourrissent de données. Si le contrat ne précise pas que les données client ne peuvent pas être utilisées à des fins d'entraînement du modèle, elles le seront — légalement, selon la plupart des CGU standard.
+Erreur n°1 : Signer des contrats prestataires sans clause de protection des données d'entraînement. Les modèles IA se nourrissent de données. Si le contrat ne précise pas que les données client ne peuvent pas être utilisées à des fins d'entraînement du modèle, elles le seront — légalement, selon la plupart des CGU standard. Dans plus de la moitié des cas documentés par notre rédaction, la clause problématique n'a jamais été relue par un juriste avant signature.
 
-Erreur n°2 : Confondre "outputs conformes à nos guidelines" et "outputs dont on détient la propriété". Selon le droit français, les œuvres générées par IA ne bénéficient pas automatiquement de la protection du droit d'auteur au profit de l'utilisateur. La question de qui est propriétaire des visuels générés reste juridiquement ouverte dans la plupart des contrats.
+Erreur n°2 : Confondre "outputs conformes à nos guidelines" et "outputs dont on détient la propriété". Selon le droit français, les œuvres générées par IA ne bénéficient pas automatiquement de la protection du droit d'auteur au profit de l'utilisateur. La question de qui est propriétaire des visuels générés reste juridiquement ouverte dans la plupart des contrats — un flou que peu de directions marketing anticipent avant qu'un litige ne les y contraigne.
 
-Erreur n°3 : Ignorer les résistances internes comme un problème de communication. Les équipes commerciales B2B qui refusent d'utiliser des contenus IA Gen ne sont pas "en retard". Elles expriment une préoccupation légitime sur la qualité relationnelle de leurs interactions client. La réponse ne peut pas être "on leur explique que c'est bien".
+Erreur n°3 : Ignorer les résistances internes comme un problème de communication. Les équipes commerciales B2B qui refusent d'utiliser des contenus IA Gen ne sont pas "en retard". Elles expriment une préoccupation légitime sur la qualité relationnelle de leurs interactions client. La réponse ne peut pas être "on leur explique que c'est bien" — plusieurs directions ayant tenté cette approche rapportent un rejet encore plus marqué en retour.
 
-Erreur n°4 : Lancer sans évaluer l'EU AI Act. L'acte s'applique dès mai 2027. Les directions juridiques qui n'ont pas encore conduit d'analyse de conformité jouent une course contre la montre.
+Erreur n°4 : Lancer sans évaluer l'EU AI Act. L'acte s'applique dès mai 2027. Les directions juridiques qui n'ont pas encore conduit d'analyse de conformité jouent une course contre la montre, avec un risque de sanction qui peut atteindre 6% du chiffre d'affaires mondial.
 
-Erreur n°5 : Oublier les indicateurs. Un déploiement IA Gen sans KPI de mesure d'impact — production, engagement, conformité — est un déploiement qu'on ne peut pas piloter, et encore moins défendre en CODIR.`
+Erreur n°5 : Oublier les indicateurs. Un déploiement IA Gen sans KPI de mesure d'impact — production, engagement, conformité — est un déploiement qu'on ne peut pas piloter, et encore moins défendre en CODIR face à une direction générale qui demandera, à un moment ou un autre, des preuves chiffrées plutôt qu'un ressenti positif.`
     }
   ],
 
@@ -395,16 +464,23 @@ d'envoyer une campagne email générée par IA à son portefeuille. Il m'a dit :
 "Camille, mes clients me font confiance à moi. Si je leur envoie un truc
 produit par un algorithme sans leur dire, c'est une forme de tromperie."
 
-Je ne dis pas qu'il a tort.
+Je ne dis pas qu'il a tort. Et il n'est pas isolé — sur les huit commerciaux
+de mon équipe, j'en ai au moins trois qui m'ont fait remonter un malaise
+similaire, à des degrés différents. Ce n'est pas un cas de résistance
+individuelle au changement, c'est un signal collectif sur notre métier.
 
 Sonia voit le gain de productivité. Elle voit les visuels. Elle ne voit pas
 que la relation commerciale B2B, ça tient à du qualitatif que l'IA ne saisit
 pas encore — la mémoire des échanges, le ton qui s'ajuste, l'humain derrière
-l'écran.
+l'écran. Nos 180 clients B2B, on les a construits un par un, sur plusieurs
+années, pas avec des campagnes automatisées.
 
 Ce que j'attends de la contribution individuelle : pas un "on va former les
 équipes à accepter l'IA". Ça, c'est condescendant. J'attends qu'on reconnaisse
-que les résistances ont une valeur, et qu'on les intègre dans le plan.
+que les résistances ont une valeur, et qu'on les intègre dans le plan. Si la
+proposition finale ne distingue pas B2B et B2C sur ce sujet, elle sera
+inapplicable chez nous — pas par mauvaise volonté, mais parce que le terrain
+ne fonctionne pas pareil des deux côtés.
 
 Mon numéro direct si vous voulez échanger : +33 6 ▒▒ ▒▒ ▒▒ ▒▒.
 
@@ -681,11 +757,7 @@ window.PASS_CONFIG = {
 // === [PAC v2 complétion] fin ===
 
 
-// === [Chantier PDF+Browser] dossiers/guide/portraits — 02/07/2026 ===
-// Restructuration de D.rapportIncident (déjà écrit) en D.dossiers[]. Guide
-// construit depuis PAC_CONFIG.temps[].objectif/todoSuggere (déjà écrits).
-// Ajout D.portraits[] (5 personnages universels) + dossier Finder dédié.
-// Aucun contenu narratif nouveau : uniquement restructuration + câblage.
+// === [Chantier PDF+Browser] dossiers/guide/portraits — régénéré 01/07/2026 après densification narrative ===
 (function() {
   var D = window.LUMIO_DATA;
   if (!D) return;
@@ -693,7 +765,7 @@ window.PASS_CONFIG = {
   {
     "id": "rapport-incident",
     "title": "Rapport d'incident — Prestataire DataViz Studio",
-    "tab": "Rapport d'incident — Pres…",
+    "tab": "Rapport incident",
     "accent": "#c4420f",
     "warning": true,
     "confidential": "CONFIDENTIEL — Ne pas diffuser hors équipe projet",
@@ -730,7 +802,7 @@ window.PASS_CONFIG = {
           },
           {
             "type": "p",
-            "text": "dans le pipeline d'entraînement de son modèle de personnalisation."
+            "text": "dans le pipeline d'entraînement de son modèle de personnalisation. Sur\ndemande explicite le 13 avril, DataViz Studio a confirmé par écrit que ces\ndonnées concernaient environ 60 des 180 comptes clients B2B actifs de Lumio\n— ceux dont les données étaient les plus complètes dans notre CRM."
           },
           {
             "type": "h3",
@@ -742,7 +814,7 @@ window.PASS_CONFIG = {
           },
           {
             "type": "p",
-            "text": "Cette clause n'a pas été soumise à validation juridique avant signature.\nElle n'a pas non plus été signalée au DPO de Lumio Health."
+            "text": "Cette clause n'a pas été soumise à validation juridique avant signature.\nElle n'a pas non plus été signalée au DPO de Lumio Health. Le contrat ne\nprévoit par ailleurs aucune durée de conservation des données transmises,\nni de clause d'audit permettant à Lumio de vérifier l'usage réel qui en\nest fait — nous découvrons cet usage a posteriori, par un mentionnement\noral, pas par un mécanisme de contrôle prévu au contrat."
           },
           {
             "type": "h3",
@@ -750,15 +822,15 @@ window.PASS_CONFIG = {
           },
           {
             "type": "p",
-            "text": "RGPD : Les données clients utilisées contiennent des informations nominatives\nsur des personnes physiques (contacts DRH). Leur utilisation à des fins\nd'entraînement IA constitue un traitement de données non déclaré."
+            "text": "RGPD : Les données clients utilisées contiennent des informations nominatives\nsur des personnes physiques (contacts DRH). Leur utilisation à des fins\nd'entraînement IA constitue un traitement de données non déclaré. Le délai\nlégal de notification à la CNIL en cas de violation avérée est de 72 heures\nà compter de la connaissance des faits — nous sommes à J+3 sans notification\nni décision sur l'opportunité d'en faire une."
           },
           {
             "type": "p",
-            "text": "CONTRACTUEL : Le contrat DataViz Studio ne prévoit pas de clause de\nrestitution ou destruction des données en fin de mission."
+            "text": "CONTRACTUEL : Le contrat DataViz Studio ne prévoit pas de clause de\nrestitution ou destruction des données en fin de mission. Même en cas de\nrupture immédiate du contrat, rien n'oblige aujourd'hui le prestataire à\nsupprimer les données déjà intégrées à son modèle."
           },
           {
             "type": "p",
-            "text": "RÉPUTATIONNEL : Si un client Lumio apprend que ses données ont alimenté\nun modèle IA tiers sans son consentement, impact potentiel sur la relation."
+            "text": "RÉPUTATIONNEL : Si un client Lumio apprend que ses données ont alimenté\nun modèle IA tiers sans son consentement, impact potentiel sur la relation\n— particulièrement sensible pour les comptes historiques (certains clients\ndepuis l'origine de l'entreprise en 2018) dont la confiance repose en grande\npartie sur la réputation de rigueur de Lumio en matière de données de santé."
           },
           {
             "type": "h3",
@@ -766,7 +838,7 @@ window.PASS_CONFIG = {
           },
           {
             "type": "p",
-            "text": "Un visuel généré le 8 avril pour la campagne \"Lumio B2C — Lancement grand\npublic\" présente une composition et un traitement colorimétrique très proches\ndu style de Léa Ferron (agence Mirage), photographe connue dans le secteur\nsanté/bien-être. Léa Ferron a été informée par un confrère. Aucun contact\nofficiel à ce jour, mais le risque de mise en demeure est réel."
+            "text": "Un visuel généré le 8 avril pour la campagne \"Lumio B2C — Lancement grand\npublic\" présente une composition et un traitement colorimétrique très proches\ndu style de Léa Ferron (agence Mirage), photographe connue dans le secteur\nsanté/bien-être. Léa Ferron a été informée par un confrère. Aucun contact\nofficiel à ce jour, mais le risque de mise en demeure est réel. Le visuel\nen question a déjà été vu par environ 40 000 personnes en test A/B interne\navant d'être retiré de la rotation par précaution le 11 avril, la veille\nmême de la découverte de l'incident RGPD."
           },
           {
             "type": "h3",
@@ -774,7 +846,7 @@ window.PASS_CONFIG = {
           },
           {
             "type": "p",
-            "text": "Suspendre l'utilisation des outputs DataViz Studio jusqu'à clarification\ncontractuelle et validation par le service juridique et le DPO."
+            "text": "Suspendre l'utilisation des outputs DataViz Studio jusqu'à clarification\ncontractuelle et validation par le service juridique et le DPO. Établir en\nparallèle une cartographie complète des 60 comptes clients concernés par\nl'incident RGPD, pour être en mesure de répondre rapidement si l'un d'eux\npose la question directement."
           },
           {
             "type": "p",
@@ -899,4 +971,4 @@ window.PASS_CONFIG = {
     D.finder.order.splice(gIdx >= 0 ? gIdx + 1 : 0, 0, 'portraits');
   }
 })();
-// === [Chantier PDF+Browser] fin ===
+// === fin ===
