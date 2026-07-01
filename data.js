@@ -679,3 +679,224 @@ window.PASS_CONFIG = {
   window.PASS_CONFIG = cfg;
 })();
 // === [PAC v2 complétion] fin ===
+
+
+// === [Chantier PDF+Browser] dossiers/guide/portraits — 02/07/2026 ===
+// Restructuration de D.rapportIncident (déjà écrit) en D.dossiers[]. Guide
+// construit depuis PAC_CONFIG.temps[].objectif/todoSuggere (déjà écrits).
+// Ajout D.portraits[] (5 personnages universels) + dossier Finder dédié.
+// Aucun contenu narratif nouveau : uniquement restructuration + câblage.
+(function() {
+  var D = window.LUMIO_DATA;
+  if (!D) return;
+  D.dossiers = [
+  {
+    "id": "rapport-incident",
+    "title": "Rapport d'incident — Prestataire DataViz Studio",
+    "tab": "Rapport d'incident — Pres…",
+    "accent": "#c4420f",
+    "warning": true,
+    "confidential": "CONFIDENTIEL — Ne pas diffuser hors équipe projet",
+    "type": "rich",
+    "pages": [
+      {
+        "kicker": "Rédigé par Yassine Morel · 15 avril 2027",
+        "title": "Rapport d'incident — Prestataire DataViz Studio",
+        "byline": "CONFIDENTIEL — Ne pas diffuser hors équipe projet",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "OBJET : Utilisation non autorisée de données clients dans le pipeline IA"
+          },
+          {
+            "type": "h3",
+            "text": "DATE DE DÉTECTION : 12 avril 2027"
+          },
+          {
+            "type": "p",
+            "text": "PRESTATAIRE CONCERNÉ : DataViz Studio (contrat signé le 3 février 2027)\nRÉDACTEUR : Yassine Morel, Content Manager"
+          },
+          {
+            "type": "h3",
+            "text": "DESCRIPTION DE L'INCIDENT"
+          },
+          {
+            "type": "p",
+            "text": "Lors d'une réunion de suivi technique le 12 avril, l'équipe DataViz Studio\na mentionné — de façon incidente — qu'elle utilisait \"les données de contexte\nclient fournies par Lumio\" pour \"améliorer la pertinence des outputs IA\"."
+          },
+          {
+            "type": "p",
+            "text": "À la demande d'éclaircissement, il s'avère que DataViz Studio a intégré :\n- Les fiches clients Lumio (secteur, taille, historique de contrat)\n- Les verbatims DRH issus des enquêtes de satisfaction 2024-2026\n- Les données NPS segmentées par secteur"
+          },
+          {
+            "type": "p",
+            "text": "dans le pipeline d'entraînement de son modèle de personnalisation."
+          },
+          {
+            "type": "h3",
+            "text": "ANALYSE CONTRACTUELLE"
+          },
+          {
+            "type": "p",
+            "text": "Le contrat signé le 3 février 2027 (signataire : Y. Morel) contient à\nl'article 4.2 une clause stipulant que DataViz Studio peut utiliser\n\"les données fournies par le client à des fins d'optimisation du service\"."
+          },
+          {
+            "type": "p",
+            "text": "Cette clause n'a pas été soumise à validation juridique avant signature.\nElle n'a pas non plus été signalée au DPO de Lumio Health."
+          },
+          {
+            "type": "h3",
+            "text": "RISQUES IDENTIFIÉS"
+          },
+          {
+            "type": "p",
+            "text": "RGPD : Les données clients utilisées contiennent des informations nominatives\nsur des personnes physiques (contacts DRH). Leur utilisation à des fins\nd'entraînement IA constitue un traitement de données non déclaré."
+          },
+          {
+            "type": "p",
+            "text": "CONTRACTUEL : Le contrat DataViz Studio ne prévoit pas de clause de\nrestitution ou destruction des données en fin de mission."
+          },
+          {
+            "type": "p",
+            "text": "RÉPUTATIONNEL : Si un client Lumio apprend que ses données ont alimenté\nun modèle IA tiers sans son consentement, impact potentiel sur la relation."
+          },
+          {
+            "type": "h3",
+            "text": "INCIDENT VISUEL PI"
+          },
+          {
+            "type": "p",
+            "text": "Un visuel généré le 8 avril pour la campagne \"Lumio B2C — Lancement grand\npublic\" présente une composition et un traitement colorimétrique très proches\ndu style de Léa Ferron (agence Mirage), photographe connue dans le secteur\nsanté/bien-être. Léa Ferron a été informée par un confrère. Aucun contact\nofficiel à ce jour, mais le risque de mise en demeure est réel."
+          },
+          {
+            "type": "h3",
+            "text": "RECOMMANDATION IMMÉDIATE"
+          },
+          {
+            "type": "p",
+            "text": "Suspendre l'utilisation des outputs DataViz Studio jusqu'à clarification\ncontractuelle et validation par le service juridique et le DPO."
+          },
+          {
+            "type": "p",
+            "text": "Yassine Morel · Content Manager · Lumio Health"
+          }
+        ]
+      }
+    ]
+  }
+];
+  D.guide = {
+  "tips": [
+    {
+      "day": "Acte 1",
+      "title": "Ancrage terrain",
+      "body": "Entrer dans l'univers du Projet IA Gen. Comprendre le contexte post-MDR de Lumio, identifier les acteurs, cerner les signaux d'alerte.",
+      "action": "Lire le brief du Projet IA Gen de Sonia (Mail) · Lire la fiche contexte Lumio si vous découvrez l'univers (Finder) · Consulter les portraits équipe — Sonia, Yassine, Théo (Finder > Portraits)"
+    },
+    {
+      "day": "Acte 2",
+      "title": "Entrée dans l'affaire",
+      "body": "Les signaux d'alerte se précisent. Lire les documents qui révèlent les trois problèmes concrets : données clients aspirées, risque PI visuel, résistance commerciale.",
+      "action": "Lire le rapport d'incident DataViz Studio (PDF Viewer — confidentiel) · Lire l'email de Théo sur les risques juridiques (Mail — transmis par Sonia) · Lire la veille IA Gen de Yassine sur Maddyness (Navigateur)"
+    },
+    {
+      "day": "Acte 3",
+      "title": "Diagnostic",
+      "body": "Construire votre analyse des facteurs de rupture et qualifier les risques. Envoyer votre diagnostic à Sonia sur Slack — 2 échanges débloquent l'app Livrable.",
+      "action": "Identifier les facteurs de rupture IA Gen pertinents pour Lumio (C.20-II) · Qualifier les opportunités vs risques : RGPD, PI, EU AI Act, RSE · Consulter les notes CODIR du 14 avril (Notes)"
+    },
+    {
+      "day": "Acte 4",
+      "title": "Production",
+      "body": "Rédiger la contribution individuelle BC5. 3 compétences RNCP (C.20-II, C.21-II, C.22-II). Utilisez les gabarits pour C.21-II.",
+      "action": "Ouvrir l'app Livrable (débloquée après 2 échanges Slack) · Rédiger C.20-II : facteurs de rupture IA Gen contextualisés Lumio · Rédiger C.21-II : innovations à implémenter + rôles directions + risques + KPI"
+    },
+    {
+      "day": "Acte 5",
+      "title": "Réflexion",
+      "body": "Note réflexive E7 — retour sur vos choix. Ce que vous auriez fait différemment. Ce que ce projet révèle de votre posture professionnelle face à l'IA.",
+      "action": "Relire votre contribution dans le Livrable · Rédiger la note réflexive dans l'onglet dédié (min. 100 mots) · Identifier la compétence sur laquelle vous avez le plus progressé"
+    }
+  ]
+};
+  D.portraits = [
+  {
+    "key": "theo_marczak",
+    "title": "Théo Marczak",
+    "file": "portraits/portrait_theo_marczak.html"
+  },
+  {
+    "key": "sonia_ferracci",
+    "title": "Sonia Ferracci",
+    "file": "portraits/portrait_sonia_ferracci.html"
+  },
+  {
+    "key": "camille_ott",
+    "title": "Camille Ott",
+    "file": "portraits/portrait_camille_ott.html"
+  },
+  {
+    "key": "jakob_rein",
+    "title": "Jakob Rein",
+    "file": "portraits/portrait_jakob_rein.html"
+  },
+  {
+    "key": "yassine_morel",
+    "title": "Yassine Morel",
+    "file": "portraits/portrait_yassine_morel.html"
+  }
+];
+  D.finder = D.finder || { folders: {}, order: [] };
+  D.finder.folders.portraits = {
+  "title": "Portraits",
+  "sidebar": "👥 Portraits",
+  "icon": "👥",
+  "items": [
+    {
+      "kind": "portrait",
+      "name": "Théo Marczak",
+      "app": "browser",
+      "props": {
+        "openPortrait": "theo_marczak"
+      }
+    },
+    {
+      "kind": "portrait",
+      "name": "Sonia Ferracci",
+      "app": "browser",
+      "props": {
+        "openPortrait": "sonia_ferracci"
+      }
+    },
+    {
+      "kind": "portrait",
+      "name": "Camille Ott",
+      "app": "browser",
+      "props": {
+        "openPortrait": "camille_ott"
+      }
+    },
+    {
+      "kind": "portrait",
+      "name": "Jakob Rein",
+      "app": "browser",
+      "props": {
+        "openPortrait": "jakob_rein"
+      }
+    },
+    {
+      "kind": "portrait",
+      "name": "Yassine Morel",
+      "app": "browser",
+      "props": {
+        "openPortrait": "yassine_morel"
+      }
+    }
+  ]
+};
+  if (D.finder.order.indexOf('portraits') === -1) {
+    var gIdx = D.finder.order.indexOf('guide');
+    D.finder.order.splice(gIdx >= 0 ? gIdx + 1 : 0, 0, 'portraits');
+  }
+})();
+// === [Chantier PDF+Browser] fin ===
