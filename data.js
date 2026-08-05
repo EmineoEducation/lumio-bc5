@@ -972,3 +972,19 @@ window.PASS_CONFIG = {
   }
 })();
 // === fin ===
+
+// === [Carte portfolio] — 05/08/2026 · contenu propre au bloc, ajout non destructif ===
+(function () {
+  var c = window.PAC_CONFIG || window.PASS_CONFIG;
+  if (!c) return;
+  c.portfolio = {
+    missionTitre: "Introduire l'IA générative sans fragiliser la conformité",
+    miseEnSituation: "L'introduction de l'IA générative dans les outils de communication se heurte à trois obstacles simultanés : un incident de fuite de données chez un prestataire, un visuel dont la propriété intellectuelle est contestée, et l'échéance de mise en conformité à l'AI Act européen fixée au 2 mai 2027 — le tout dans une équipe qui résiste.",
+    choix: "Un déploiement par paliers, restreint d'abord aux usages sans donnée personnelle et sans production diffusée publiquement, adossé à une charte d'usage et à un registre des contenus générés, avant toute généralisation.",
+    justification: "Commencer par les usages à faible risque permet de démontrer la valeur de l'outil et de désamorcer les résistances internes pendant que le cadre de conformité se construit, plutôt que d'exposer l'entreprise avant d'avoir prouvé le bénéfice.",
+    imageSrc: ""
+  };
+  window.PAC_CONFIG = c;
+  window.PASS_CONFIG = c;
+})();
+// === [Carte portfolio] fin ===
