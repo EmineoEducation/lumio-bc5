@@ -580,14 +580,23 @@ Camille.`
           { kind: 'mail', name: 'Brief de mission', app: 'mail', props: { openId: 'brief' } }
         ]
       },
+      // F32 · « Fichier fantôme ». bc5 avait un cas supplémentaire : trois
+      // pièces (mail de Théo, 3 articles, mémo de Camille) étaient écrites
+      // dans data.js sous des clés qu'aucune application ne lit — donc
+      // invisibles. Corrigé plus bas par le bloc F43, ce qui permet de les
+      // référencer ici.
       espace: {
-        title: 'Espace de travail',
+        title: 'Espace de travail — dossier Projet IA Gen',
         sidebar: 'Espace de travail',
         icon: '📁',
         items: [
-          { kind: 'mail', name: 'Boîte mail', app: 'mail', props: {} },
-          { kind: 'note', name: 'Notes', app: 'notes', props: {} },
-          { kind: 'audio', name: 'Mémos vocaux', app: 'voice', props: {} }
+          { kind: 'mail',  label: 'MAIL', name: '00 — Brief de mission (Sonia Ferracci)',      app: 'mail',    props: { openId: 'brief' } },
+          { kind: 'pdf',   label: 'PDF',  name: '01 — Rapport d\'incident DataViz Studio',     app: 'pdf',     props: { openDoc: 'rapport-incident' } },
+          { kind: 'doc',   label: 'NOTE', name: '02 — Notes CODIR du 14 avril',                app: 'notes',   props: { openNote: 'codir' } },
+          { kind: 'mail',  label: 'MAIL', name: '03 — Mail de Théo Marczak',                   app: 'mail',    props: { openId: 'doc2' } },
+          { kind: 'audio', label: 'M4A',  name: '04 — Mémo vocal de Camille Ott',              app: 'voice',   props: {} },
+          { kind: 'doc',   label: 'WEB',  name: '05 — Revue de presse (3 articles)',           app: 'browser', props: { openTab: 'press-0' } },
+          { kind: 'note',  label: 'TXT',  name: 'Mes notes.txt',                               app: 'notepad', props: {} }
         ]
       }
     },
@@ -988,3 +997,65 @@ window.PASS_CONFIG = {
   window.PASS_CONFIG = c;
 })();
 // === [Carte portfolio] fin ===
+
+// === [F43 · Contenu orphelin] bc5 — 27/08/2026 =================
+// Trois pièces étaient rédigées dans data.js sous des clés qu'AUCUNE
+// application ne lit : theoEmail (app-mail lit jakobEmail),
+// browserArticles (app-browser lit pressArticles) et memoVocal
+// (app-voice lit voiceMemos / camilleVerbatims). Résultat : un mail
+// entier, trois articles de presse et un mémo de Camille existaient sans
+// jamais s'afficher. L'étudiant·e ne voyait que quatre pièces sur sept.
+// On expose ces contenus sous les clés attendues, sans rien réécrire.
+(function () {
+  var D = window.LUMIO_DATA;
+  if (!D) return;
+
+  // Le mail de Théo prend la place du « second document » de la boîte.
+  if (D.theoEmail && !D.jakobEmail) D.jakobEmail = D.theoEmail;
+
+  // Les articles ont déjà les champs attendus (source, headline, body).
+  if (D.browserArticles && !D.pressArticles) D.pressArticles = D.browserArticles;
+
+  // Le mémo doit être converti : app-voice attend title / durationSec.
+  if (D.memoVocal && !D.voiceMemos) {
+    var mm = String(D.memoVocal.duration || '0:00').split(':');
+    D.voiceMemos = [{
+      title: 'Ce que je ne peux pas écrire dans un compte rendu',
+      author: D.memoVocal.from || 'Camille Ott',
+      role: 'Responsable partenariats B2B',
+      date: D.memoVocal.date || '',
+      durationSec: (parseInt(mm[0], 10) || 0) * 60 + (parseInt(mm[1], 10) || 0),
+      transcript: D.memoVocal.transcript || ''
+    }];
+  }
+})();
+// === [F43] fin =================================================
+
+// === [F32 · Fichier fantôme] docIndex — 27/08/2026 =============
+// Source de vérité de la localisation, lue par app-slack.jsx et injectée
+// dans le prompt du commanditaire.
+// ⚠️ Toute pièce ajoutée au dossier « Espace de travail » doit être
+// répercutée ici — et réciproquement.
+(function () {
+  var D = window.LUMIO_DATA;
+  if (!D) return;
+
+  D.docLocationHint = "Le dossier est dans le Finder de ton poste — « Espace de travail », numéroté dans l'ordre.";
+
+  D.docIndex = [
+    { nom: "Brief de mission (Sonia Ferracci)",                     ou: "Mail → « Brief de mission » — aussi dans Finder / Espace de travail" },
+    { nom: "Rapport d'incident — prestataire DataViz Studio",       ou: "Aperçu (PDF) → onglet « Rapport incident »" },
+    { nom: "Notes du CODIR du 14 avril 2027",                       ou: "Notes → « Notes CODIR »" },
+    { nom: "Mail de Théo Marczak sur le projet IA Gen",             ou: "Mail → « Re: Projet IA Gen — questions que personne ne pose »" },
+    { nom: "Mémo vocal de Camille Ott (transcrit)",                 ou: "Mémos vocaux" },
+    { nom: "Revue de presse : Maddyness, Les Stratégies, CB News Tech", ou: "Safari → trois onglets déjà ouverts" },
+    { nom: "Portraits presse des 5 dirigeants",                     ou: "Finder → dossier « Portraits »" },
+    { nom: "Bloc-notes personnel de l'étudiant·e",                  ou: "Bloc-notes (Mes notes.txt)" }
+  ];
+
+  D.docPrecisions = [
+    "Il n'existe ni analyse d'impact RGPD formalisée, ni avis juridique écrit sur l'EU AI Act au dossier. Leur absence fait partie du problème à traiter, ne renvoie vers aucun document qui les contiendrait.",
+    "Le contrat avec DataViz Studio n'est pas consultable : seul le rapport d'incident le décrit. Ne propose pas d'aller le chercher."
+  ];
+})();
+// === [F32] fin =================================================
